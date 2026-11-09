@@ -1,0 +1,53 @@
+name: Update the transfer board
+
+on:
+  schedule:
+    - cron: "0 12 * * 1"          # every Monday at 12:00 UTC (7-8am Eastern)
+  push:
+    paths:
+      - "inputs/evanmiya/**"      # uploading a new EvanMiya file triggers an update right away
+  workflow_dispatch:              # "Run workflow" button on the Actions tab
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+concurrency:
+  group: board-update
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0          # full history, so the EvanMiya file's upload date is known
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+      - run: pip install -r requirements.txt
+      - name: Rebuild the board
+        run: python scripts/update_board.py
+      - name: Save the new board and data in the repository
+        run: |
+          git config user.name "board-bot"
+          git config user.email "board-bot@users.noreply.github.com"
+          git add site inputs/torvik pipeline/hometown_locations.csv
+          git diff --cached --quiet || git commit -m "Weekly board update"
+          git push
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: site
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4
