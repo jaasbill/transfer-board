@@ -1,12 +1,12 @@
 {
   "team_results.csv": {
     "updated": false,
-    "note": "download failed (ConnectionError)",
+    "note": "HTTP 403",
     "kept_previous": true
   },
   "players.csv": {
     "updated": false,
-    "note": "download failed (ConnectionError)",
+    "note": "HTTP 403",
     "kept_previous": true
   }
 }

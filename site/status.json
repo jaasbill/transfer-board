@@ -1,17 +1,17 @@
 {
-  "updated": "2026-11-09T20:20Z",
+  "updated": "2026-11-09T20:54Z",
   "evanmiya_file": "player-ratings.csv",
   "data_as_of": "Nov 9, 2026",
   "watch_list_players": 3109,
   "torvik": {
     "team_results.csv": {
       "updated": false,
-      "note": "download failed (ConnectionError)",
+      "note": "HTTP 403",
       "kept_previous": true
     },
     "players.csv": {
       "updated": false,
-      "note": "download failed (ConnectionError)",
+      "note": "HTTP 403",
       "kept_previous": true
     }
   }
